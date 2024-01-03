@@ -1,0 +1,73 @@
+﻿@page
+@model ReportesASPNET.Pages.Articulos.EditModel
+@{
+}
+
+<br>
+<h2>Editar Artículo</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button tpye='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+
+<form method="POST">
+    <intput type="hidden" name="id" value="@Model.articuloInfo.idArticulo">
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Nombre</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="nombre" value="@Model.articuloInfo.nombre">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Rubro</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="rubro" value="@Model.articuloInfo.rubro">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Descripcion</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="descripcion" value="@Model.articuloInfo.descripcion">
+        </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Estado</label>
+            <div class="col-sm-6">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="activo" name="activo" value="true" @(Model.articuloInfo.activo ? "checked" : "") />
+                    <label class="form-check-label" for="activo">Activo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" id="desactivado" name="activo" value="false" @(Model.articuloInfo.activo ? "" : "checked") />
+                    <label class="form-check-label" for="desactivado">Desactivado</label>
+                </div>
+            </div>
+        </div>
+
+    @if (Model.successMessage.Length > 0)
+    {
+        <div class="row mb-3">
+            <div class="col-sm-9">
+                <div class='alert alertalert-success alert-dismissible fade show' role='alert'>
+                    <strong>@Model.successMessage</strong>
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-primary" href="/" role="button">Cancelar</a>
+        </div>
+    </div>
+
+</form>

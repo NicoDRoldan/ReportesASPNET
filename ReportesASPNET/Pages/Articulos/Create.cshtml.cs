@@ -6,6 +6,13 @@ namespace ReportesASPNET.Pages.Articulos
 {
     public class CreateModel : PageModel
     {
+        private readonly IConfiguration _configuration;
+
+        public CreateModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public ArticuloInfo articuloInfo = new ArticuloInfo();
         public string errorMessage = "";
         public string successMessage = "";
@@ -31,10 +38,9 @@ namespace ReportesASPNET.Pages.Articulos
 
             try
             {
-                string connectionString = "Data Source=26.188.233.195,1433;Initial Catalog=Reportes;User ID=sa;Password=cinettorcel;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
                 string query = "INSERT INTO ARTICULOS (Nombre, Rubro, Activo, Descripcion, Fecha) VALUES(@nombre,@rubro,@activo,@descripcion,@fecha); SELECT SCOPE_IDENTITY();";
 
-                using(SqlConnection  con = new SqlConnection(connectionString))
+                using(SqlConnection  con = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     con.Open();
 

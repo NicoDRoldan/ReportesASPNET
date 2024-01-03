@@ -6,15 +6,21 @@ namespace ReportesASPNET.Pages.Articulos
 {
     public class IndexModel : PageModel
     {
+        private readonly IConfiguration _configuration;
+
+        public IndexModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public List<ArticuloInfo> listaArticulos = new List<ArticuloInfo>();
         public void OnGet()
         {
             try
             {
-                string connectionString = "Data Source=26.188.233.195,1433;Initial Catalog=Reportes;User ID=sa;Password=cinettorcel;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
                 string query = "SELECT * FROM Articulos";
 
-                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     sqlConnection.Open();
 

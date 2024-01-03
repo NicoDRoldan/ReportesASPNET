@@ -11,7 +11,7 @@ namespace ReportesASPNET.Pages.Articulos
         {
             try
             {
-                string connectionString = "Data Source=(local);Initial Catalog=Reportes;User ID=sa;Password=cinettorcel;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+                string connectionString = "Data Source=26.188.233.195,1433;Initial Catalog=Reportes;User ID=sa;Password=cinettorcel;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
                 string query = "SELECT * FROM Articulos";
 
                 using (SqlConnection sqlConnection = new SqlConnection(connectionString))

@@ -13,7 +13,7 @@
             <th>ID_Articulo</th>
             <th>Nombre</th>
             <th>Rubro</th>
-            <th>Activo</th>
+            <th>Estado</th>
             <th>Descripcion</th>
             <th>Fecha</th>
         </tr>
@@ -25,7 +25,15 @@
                 <td>@item.idArticulo</td>
                 <td>@item.nombre</td>
                 <td>@item.rubro</td>
-                <td>@item.activo</td>
+
+                @if(item.activo == true)
+                {
+                    <td>Activo</td>
+                }
+                else{
+                    <td>Desactivado</td>
+                }
+
                 <td>@item.descripcion</td>
                 <td>@item.fecha</td>
 

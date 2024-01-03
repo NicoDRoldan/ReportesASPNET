@@ -1,0 +1,40 @@
+﻿@page
+@model ReportesASPNET.Pages.Articulos.IndexModel
+@{
+}
+
+<br>
+<h2>Lista de Artículos</h2>
+<a class= 'btn btn-primary btn-sm' href = '/Create'>Nuevo Articulo</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID_Articulo</th>
+            <th>Nombre</th>
+            <th>Rubro</th>
+            <th>Activo</th>
+            <th>Descripcion</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.listaArticulos)
+        {
+            <tr>
+                <td>@item.idArticulo</td>
+                <td>@item.nombre</td>
+                <td>@item.rubro</td>
+                <td>@item.activo</td>
+                <td>@item.descripcion</td>
+                <td>@item.fecha</td>
+
+                <td>
+                    <a class='btn btn-primary btn-sm' href='/Articulos/Edit?idArticulo=@item.idArticulo'>Editar</a>
+                    <a class='btn btn-danger btn-sm' href='/Articulos/Delete?idArticulo=@item.idArticulo'>Eliminar</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

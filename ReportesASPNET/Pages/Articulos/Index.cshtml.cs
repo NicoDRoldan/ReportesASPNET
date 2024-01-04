@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using ReportesASPNET.Pages.Precios;
 
 namespace ReportesASPNET.Pages.Articulos
 {
@@ -18,7 +19,7 @@ namespace ReportesASPNET.Pages.Articulos
         {
             try
             {
-                string query = "SELECT * FROM Articulos";
+                string query = "SELECT a.id_Articulo, Nombre, Precio, Rubro, Activo, Descripcion, a.Fecha FROM Articulos a LEFT JOIN Precios p on p.id_Articulo = a.id_Articulo";
 
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
@@ -33,15 +34,16 @@ namespace ReportesASPNET.Pages.Articulos
                                 ArticuloInfo info = new ArticuloInfo();
                                 info.idArticulo = reader.GetInt32(0);
                                 info.nombre = reader.GetString(1);
-                                info.rubro = reader.GetString(2);
-                                info.activo = reader.GetBoolean(3);
-                                info.descripcion = reader.IsDBNull(4) ? null : reader.GetString(4);
-                                info.fecha = reader.IsDBNull(5) ? null : reader.GetDateTime(5);
+                                info.precio = reader.IsDBNull(2) ? null : reader.GetDecimal(2);
+                                info.rubro = reader.GetString(3);
+                                info.activo = reader.GetBoolean(4);
+                                info.descripcion = reader.IsDBNull(5) ? null : reader.GetString(5);
+                                info.fecha = reader.IsDBNull(6) ? null : reader.GetDateTime(6);
 
                                 listaArticulos.Add(info);
                             }
                         }
-                    }
+                    } 
                 }
             }
             catch (Exception ex)
@@ -59,5 +61,6 @@ namespace ReportesASPNET.Pages.Articulos
         public bool activo;
         public string? descripcion;
         public DateTime? fecha;
+        public decimal? precio;
     }
 }

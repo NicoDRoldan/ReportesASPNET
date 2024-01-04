@@ -2,3 +2,32 @@
 @model ReportesASPNET.Pages.Precios.IndexModel
 @{
 }
+
+<br>
+<h2>Lista de Precios</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Precio</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.listaPrecios)
+        {
+            <tr>
+                <td>@item.id_Articulo</td>
+                <td>@item.precio</td>
+                <td>@item.fecha</td>
+                
+                <td>
+                    <a class='btn btn-primary btn-sm' href='/Precios/Edit?idArticulo=@item.id_Articulo'>Editar</a>
+                    <a class='btn btn-danger btn-sm' href='/Precios/Delete?idArticulo=@item.id_Articulo'>Eliminar</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

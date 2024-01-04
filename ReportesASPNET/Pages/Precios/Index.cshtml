@@ -21,12 +21,6 @@
                 <td>@item.id_Articulo</td>
                 <td>@string.Format("{0:0.00}", item.precio)</td>
                 <td>@item.fecha</td>
-                
-                <td>
-                    <a class='btn btn-primary btn-sm' href='/Precios/Edit?idArticulo=@item.id_Articulo'>Editar</a>
-                    <a class='btn btn-danger btn-sm' href='/Precios/Delete?idArticulo=@item.id_Articulo'>Eliminar</a>
-                </td>
-
             </tr>
         }
     </tbody>

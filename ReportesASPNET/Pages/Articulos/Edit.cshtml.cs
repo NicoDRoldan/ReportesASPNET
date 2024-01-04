@@ -55,26 +55,59 @@ namespace ReportesASPNET.Pages.Articulos
         }
 
         public void OnPost()
-
         {
+            // Se le pasa el valor escrito por el usuario al campo correspondiente de articuloInfo:
+
             articuloInfo.idArticulo = int.Parse(Request.Query["idArticulo"]);
             articuloInfo.nombre = Request.Form["nombre"];
-            articuloInfo.precio = decimal.Parse(Request.Form["precio"]);
+
+            // Validación para el campo de Precio
+
+            string precioString = Request.Form["precio"];
+
+            if (!string.IsNullOrEmpty(precioString))
+            {
+                if(decimal.TryParse(precioString, out decimal precio))
+                {
+                    articuloInfo.precio = precio;
+                }
+                else
+                {
+                    articuloInfo.precio = 0;
+                }
+            }
+            else
+            {
+                articuloInfo.precio = 0;
+            }
+
             articuloInfo.rubro = Request.Form["rubro"];
+
+            // Validación para el campo de Activo
 
             string boolString = Request.Form["activo"];
             bool activo;
 
-            if(bool.TryParse(boolString, out activo))
+            if (bool.TryParse(boolString, out activo))
             {
                 articuloInfo.activo = activo;
             }
             else
             {
-                articuloInfo.activo =false;
+                articuloInfo.activo = false;
             }
 
             articuloInfo.descripcion = Request.Form["descripcion"];
+
+            // Se valida que los campos no esten en blanco.
+
+            if (articuloInfo.nombre.Length == 0 || articuloInfo.rubro.Length == 0)
+            {
+                errorMessage = "Completar todos los campos.";
+                return;
+            }
+
+            // Se hace la conexión y se realizan las querys correspondientes.
 
             try
             {

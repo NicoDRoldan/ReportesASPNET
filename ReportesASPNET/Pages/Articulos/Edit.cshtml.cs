@@ -6,22 +6,26 @@ using System.Reflection.PortableExecutable;
 namespace ReportesASPNET.Pages.Articulos
 {
     public class EditModel : PageModel
-
     {
+        private readonly IConfiguration _configuration;
+
+        public EditModel(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public ArticuloInfo articuloInfo = new ArticuloInfo();
+
         public string errorMessage = "";
         public string successMessage = "";
 
         public void OnGet()
         {
-
             int id = int.Parse(Request.Query["idArticulo"]);
 
             try
             {
-                String connectionString = "Data Source=26.188.233.195,1433;Initial Catalog=Reportes;User ID=sa;Password=cinettorcel;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
-
-                using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
                     sqlConnection.Open();
                     string query = "SELECT * FROM Articulos where id_Articulo=@id";

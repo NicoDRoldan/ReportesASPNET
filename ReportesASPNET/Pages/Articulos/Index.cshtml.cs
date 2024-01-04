@@ -15,6 +15,7 @@ namespace ReportesASPNET.Pages.Articulos
         }
 
         public List<ArticuloInfo> listaArticulos = new List<ArticuloInfo>();
+
         public void OnGet()
         {
             try

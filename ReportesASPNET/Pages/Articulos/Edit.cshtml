@@ -23,6 +23,12 @@
         </div>
     </div>
     <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Precio</label>
+        <div class="col-sm-6">
+                <input type="text" class="form-control" name="precio" value="@string.Format("{0:0.00}", @Model.articuloInfo.precio)">
+        </div>
+    </div>
+    <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Rubro</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" name="rubro" value="@Model.articuloInfo.rubro">
@@ -65,9 +71,9 @@
         <div class="offset-sm-3 col-sm-3 d-grid">
             <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
-        <div class="col-sm-3 d-grid">
-            <a class="btn btn-outline-primary" href="/" role="button">Cancelar</a>
-        </div>
+            <div class="col-sm-3 d-grid">
+                <a class="btn btn-outline-primary" href="/Articulos" role="button">Cancelar</a>
+            </div>
     </div>
 
 </form>

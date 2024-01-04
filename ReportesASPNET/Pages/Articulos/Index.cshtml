@@ -10,12 +10,13 @@
 <table class="table">
     <thead>
         <tr>
-            <th>ID_Articulo</th>
+            <th>ID</th>
             <th>Nombre</th>
+            <th>Precio</th>
             <th>Rubro</th>
             <th>Estado</th>
             <th>Descripcion</th>
-            <th>Fecha</th>
+            <th>Fecha de alta</th>
         </tr>
     </thead>
     <tbody>
@@ -24,16 +25,9 @@
             <tr>
                 <td>@item.idArticulo</td>
                 <td>@item.nombre</td>
+                <td>@string.Format("{0:0.00}", item.precio)</td>
                 <td>@item.rubro</td>
-
-                @if(item.activo == true)
-                {
-                    <td>Activo</td>
-                }
-                else{
-                    <td>Desactivado</td>
-                }
-
+                <td>@(item.activo ? "Activo" : "Desactivado")</td>
                 <td>@item.descripcion</td>
                 <td>@item.fecha</td>
 

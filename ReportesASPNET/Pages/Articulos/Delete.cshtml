@@ -1,0 +1,32 @@
+﻿@page
+
+@using Microsoft.Data.SqlClient;
+
+@{
+    try
+    {
+        string id = Request.Query["idArticulo"];
+
+        string stringConnection = "Data Source=(local);Initial Catalog=Reportes;User ID=sa;Password=cinettorcel;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False;";
+        string query = "DELETE Articulos WHERE id_Articulo = @pinga";
+
+        using(SqlConnection sqlConnection = new SqlConnection(stringConnection))
+        {
+            sqlConnection.Open();
+
+            using(SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+            {
+                sqlCommand.Parameters.AddWithValue("@pinga", id);
+                sqlCommand.ExecuteNonQuery();
+            }
+
+            sqlConnection.Close();
+        }
+    }
+    catch(SqlException ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
+
+    Response.Redirect("/Articulos");
+}

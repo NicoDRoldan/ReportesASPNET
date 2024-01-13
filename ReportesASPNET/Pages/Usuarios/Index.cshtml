@@ -2,3 +2,41 @@
 @model ReportesASPNET.Pages.Usuarios.IndexModel
 @{
 }
+
+<br>
+<h2>Lista de Usuarios</h2>
+<a class='btn btn-primary btn-sm' href='/Usuarios/Create'>Nuevo Usuario</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Usuarios</th>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Categoria</th>
+            <th>Estado</th>
+            <th>Fecha de alta</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model.Usuarios)
+        {
+            <tr>
+                <td>@usuario.Id_Usuario</td>
+                <td>@usuario.Usuario</td>
+                <td>@usuario.Nombre</td>
+                <td>@usuario.Apellido</td>
+                <td>@usuario.Categoria.Nombre</td>
+                <td>@(usuario.Estado ? "Activo" : "Desactivado")</td>
+                <td>@usuario.Fecha</td>
+
+                <td>
+                    <a class='btn btn-primary btn-sm' href='/Usuarios/Edit?id_Usuario=@usuario.Id_Usuario'>Editar</a>
+                    <a class='btn btn-danger btn-sm' href='/Usuarios/Delete?id_Usuario=@usuario.Id_Usuario'>Eliminar</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

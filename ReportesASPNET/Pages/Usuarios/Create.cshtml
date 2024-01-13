@@ -2,3 +2,70 @@
 @model ReportesASPNET.Pages.Usuarios.CreateModel
 @{
 }
+
+<br>
+<h2>Nuevo Usuario</h2>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class='alert alert-warning alert-dismissible fade show' role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button tpye='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+    </div>
+}
+
+<form method="POST">
+
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Nombre de Usuario</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="usuario" value="@Model.usuario.Nombre">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Contraseña</label>
+        <div class="col-sm-6">
+            <input type="password" class="form-control" name="passwordUser" value="@Model.usuario.Password">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Nombre</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="nombreUser" value="@Model.usuario.Nombre">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Apellido</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="apellidoUser" value="@Model.usuario.Apellido">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Categoria</label>
+        <div class="col-sm-6">
+            <input type="text" class="form-control" name="categoria" value="@Model.usuario.Categoria">
+        </div>
+    </div>
+
+    @if (Model.successMessage.Length > 0)
+    {
+        <div class="row mb-3">
+            <div class="col-sm-9">
+                <div class='alert alertalert-success alert-dismissible fade show' role='alert'>
+                    <strong>@Model.successMessage</strong>
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="offset-sm-3 col-sm-3 d-grid">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+        <div class="col-sm-3 d-grid">
+            <a class="btn btn-outline-primary" href="/Usuarios" role="button">Cancelar</a>
+        </div>
+    </div>
+
+</form>

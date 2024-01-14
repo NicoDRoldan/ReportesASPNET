@@ -40,12 +40,24 @@
             <input type="text" class="form-control" name="apellidoUser" value="@Model.usuario.Apellido">
         </div>
     </div>
-    <div class="row mb-3">
+@*     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Categoria</label>
         <div class="col-sm-6">
             <input type="text" class="form-control" name="categoria" value="@Model.usuario.Categoria">
         </div>
+    </div> *@
+    <div class="row mb-3">
+        <label class="col-sm-3 col-form-label">Categoria</label>
+        <div class="col-sm-6">
+            <select class="form-control" name="Categoria">
+                @foreach (var categoria in Model.listaCategorias)
+                {
+                    <option value="@categoria.Id_Categoria">@categoria.Nombre</option>
+                }
+            </select>
+        </div>
     </div>
+
 
     @if (Model.successMessage.Length > 0)
     {

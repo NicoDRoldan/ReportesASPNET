@@ -21,7 +21,7 @@ namespace ReportesASPNET.Pages.Usuarios
         {
             try
             {
-                string query = "SELECT id_Usuario, Usuario, Password, c.Nombre [Categoria], Estado, Fecha, u.Nombre, Apellido FROM Usuarios u INNER JOIN Categorias c ON c.id_Categoria = u.id_Categoria";
+                string query = "SELECT id_Usuario, Usuario, Password, c.Nombre [Categoria], Estado, Fecha, u.Nombre, Apellido FROM Usuarios u INNER JOIN Categorias c ON c.id_Categoria = u.id_Categoria ORDER BY id_Usuario;";
 
                 using(SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("Defaultconnection")))
                 {

@@ -23,17 +23,26 @@ namespace ReportesASPNET.Pages.Usuarios
 
         public void OnGet()
         {
+            listaCategorias = TraerCategorias();
         }
 
         public void OnPost()
         {
             listaCategorias = TraerCategorias();
 
+            int categoriaIdSeleccionada;
+
             usuario.Usuario = Request.Form["Usuario"];
             usuario.Password = Request.Form["PasswordUser"];
             usuario.Nombre = Request.Form["NombreUser"];
             usuario.Apellido = Request.Form["ApellidoUser"];
-            CategoriaModels categoriaSeleccionada = listaCategorias.FirstOrDefault(c => c.Nombre == Request.Form["Categoria"]);
+
+            if (int.TryParse(Request.Form["Categoria"], out categoriaIdSeleccionada))
+            {
+                CategoriaModels categoriaSeleccionada = listaCategorias.FirstOrDefault(c => c.Id_Categoria == categoriaIdSeleccionada);
+                usuario.Id_Categoria = categoriaSeleccionada.Id_Categoria;
+            }
+            
             usuario.Fecha = DateTime.Today;
             usuario.Estado = true;
 

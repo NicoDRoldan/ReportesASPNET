@@ -23,22 +23,20 @@ namespace ReportesASPNET.Pages.Usuarios
             {
                 string query = "SELECT id_Usuario, Usuario, Password, c.Nombre [Categoria], Estado, Fecha, u.Nombre, Apellido FROM Usuarios u INNER JOIN Categorias c ON c.id_Categoria = u.id_Categoria ORDER BY id_Usuario;";
 
-                using(SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("Defaultconnection")))
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("Defaultconnection")))
                 {
                     sqlConnection.Open();
 
-                    using(SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                    using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
                     {
-                        using(SqlDataReader reader = sqlCommand.ExecuteReader())
+                        using (SqlDataReader reader = sqlCommand.ExecuteReader())
                         {
                             while (reader.Read())
                             {
                                 UsuariosModels usuario = new UsuariosModels();
                                 CategoriaModels categoria = new CategoriaModels();
 
-                                int usuarioId = reader.GetInt32(0);
-
-                                usuario.Id_Usuario = usuarioId;
+                                usuario.Id_Usuario = reader.GetInt32(0);
                                 usuario.Usuario = reader.GetString(1);
                                 usuario.Password = reader.GetString(2);
                                 usuario.Estado = reader.GetBoolean(4);

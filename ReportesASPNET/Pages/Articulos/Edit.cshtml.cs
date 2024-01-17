@@ -45,6 +45,7 @@ namespace ReportesASPNET.Pages.Articulos
                             }
                         }
                     }
+                    sqlConnection.Close();
                 }
             }
             catch (Exception ex)

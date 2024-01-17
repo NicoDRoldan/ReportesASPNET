@@ -3,11 +3,14 @@
 @{
 }
 
-<br>
+<html>
+<body>
+
 <h2>Lista de Artículos</h2>
 <a class= 'btn btn-primary btn-sm' href = '/Articulos/Create'>Nuevo Articulo</a>
 
-<table class="table">
+<br>
+<table class="table"><br>
     <thead>
         <tr>
             <th>ID</th>
@@ -19,7 +22,6 @@
             <th>Fecha de alta</th>
         </tr>
     </thead>
-    <tbody>
         @foreach(var item in Model.listaArticulos)
         {
             <tr>
@@ -38,5 +40,6 @@
 
             </tr>
         }
-    </tbody>
-</table>
+    </table>
+</body>
+</html>

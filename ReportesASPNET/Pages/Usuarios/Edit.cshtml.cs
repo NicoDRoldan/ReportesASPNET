@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using ReportesASPNET.Models;
+using ReportesASPNET.Pages.Articulos;
 using ReportesASPNET.Pages.Usuarios;
 
 namespace ReportesASPNET.Pages.Usuarios
@@ -17,14 +18,16 @@ namespace ReportesASPNET.Pages.Usuarios
 
         public UsuariosModels usuario = new UsuariosModels();
         public CategoriaModels categoria = new CategoriaModels();
-        
+        public List<CategoriaModels> listaCategorias { get; set; }
+
+
+
         public string errorMessage = "";
         public string successMessage = "";
 
         public void OnGet()
         {
-
-            CreateModel createModel = new CreateModel(_configuration);
+            listaCategorias = TraerCategorias();
 
             int id = int.Parse(Request.Query["id_Usuario"]);
 
@@ -62,23 +65,22 @@ namespace ReportesASPNET.Pages.Usuarios
 
         public void OnPost()
         {
-            CreateModel createModel = new CreateModel(_configuration);
-            List<CategoriaModels> categorias = createModel.TraerCategorias();
+            listaCategorias = TraerCategorias();
 
             usuario.Id_Usuario = int.Parse(Request.Query["id_Usuario"]);
-            usuario.Usuario = Request.Form["usuario"];
+            usuario.Usuario = Request.Form["Usuario"];
 
             int categoriaIdSeleccionada;
 
             if (int.TryParse(Request.Form["Categoria"], out categoriaIdSeleccionada))
             {
-                CategoriaModels categoriaSeleccionada = categorias.FirstOrDefault(c => c.Id_Categoria == categoriaIdSeleccionada);
+                CategoriaModels categoriaSeleccionada = listaCategorias.FirstOrDefault(c => c.Id_Categoria == categoriaIdSeleccionada);
                 usuario.Id_Categoria = categoriaSeleccionada.Id_Categoria;
             }
 
             // Validación para el campo de Estado (?
 
-            string boolString = Request.Form["estado"];
+            string boolString = Request.Form["Estado"];
             bool estado;
 
             if (bool.TryParse(boolString, out estado))
@@ -90,9 +92,80 @@ namespace ReportesASPNET.Pages.Usuarios
                 usuario.Estado = false;
             }
 
-            usuario.Nombre = Request.Form["nombre"];
-            usuario.Apellido = Request.Form["apellido"];
+            usuario.Nombre = Request.Form["NombreUser"];
 
+            usuario.Apellido = Request.Form["ApellidoUser"];
+
+            // Se hace la conexión y se realizan las querys correspondientes.
+
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    sqlConnection.Open();
+                    string query = "UPDATE Usuarios " +
+                        "SET Usuario=@Usuario, id_Categoria=@Categoria, Estado=@Estado, Nombre=@NombreUser, Apellido=@ApellidoUser " +
+                        "WHERE id_Usuario=@id_Usuario;";
+
+                    using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@Usuario", usuario.Usuario);
+                        sqlCommand.Parameters.AddWithValue("@Categoria", usuario.Id_Categoria);
+                        sqlCommand.Parameters.AddWithValue("@Estado", usuario.Estado);
+                        sqlCommand.Parameters.AddWithValue("@NombreUser", usuario.Nombre);
+                        sqlCommand.Parameters.AddWithValue("@ApellidoUser", usuario.Apellido);
+                        sqlCommand.Parameters.AddWithValue("@id_Usuario", usuario.Id_Usuario);
+
+                        sqlCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return;
+            }
+            Response.Redirect("/Usuarios/Index");
+
+        }
+
+
+        public List<CategoriaModels> TraerCategorias()
+        {
+            List<CategoriaModels> listaCategorias = new List<CategoriaModels>();
+
+            string query = "SELECT * FROM Categorias";
+
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    sqlConnection.Open();
+                    using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                    {
+                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
+                        {
+                            while (sqlDataReader.Read())
+                            {
+                                //Instancia un nuevo objeto categoria por cada vez que leo.
+                                CategoriaModels categoria = new CategoriaModels();
+
+                                categoria.Id_Categoria = sqlDataReader.GetInt32(0);
+                                categoria.Nombre = sqlDataReader.GetString(1);
+
+                                //Agrego el objeto obtenido en el select recorrido, a una lista de categorias. 
+                                listaCategorias.Add(categoria);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return listaCategorias;
         }
     }
 }

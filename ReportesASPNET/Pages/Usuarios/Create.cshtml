@@ -70,14 +70,8 @@
             <button type="submit" class="btn btn-primary">Guardar</button>
         </div>
         <div class="col-sm-3 d-grid">
-            <button type="button" class="btn btn-outline-primary" onclick="goBack()">Volver</button>
+            <a type="button" class="btn btn-outline-primary" asp-page="/Usuarios/Index">Volver</a>
         </div>
     </div>
 
 </form>
-
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>

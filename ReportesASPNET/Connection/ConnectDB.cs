@@ -2,9 +2,18 @@
 {
     public class ConnectDB
     {
+        private readonly IConfiguration _configuration;
+
+        public ConnectDB(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string ConnectionString()
         {
-            return "Data Source=26.188.233.195,1433;Initial Catalog=Reportes;User ID=sa;Password=cinettorcel;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            string connect = _configuration.GetConnectionString("DefaultConnection");
+            Console.WriteLine(connect); 
+            return connect;
         }
     }
 }

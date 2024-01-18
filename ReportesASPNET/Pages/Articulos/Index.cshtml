@@ -17,7 +17,6 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -30,7 +29,6 @@
                             <th></th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @foreach (var item in Model.listaArticulos)
                         {
@@ -42,12 +40,10 @@
                                 <td>@(item.activo ? "Activo" : "Desactivado")</td>
                                 <td>@item.descripcion</td>
                                 <td>@item.fecha</td>
-
                                 <td>
                                     <a class='btn btn-info btn-sm' href='/Articulos/Edit?idArticulo=@item.idArticulo'>Editar</a>
                                     <a class='btn btn-danger btn-sm' href='/Articulos/Delete?idArticulo=@item.idArticulo'>Eliminar</a>
                                 </td>
-
                             </tr>
                         }
                     </tbody>

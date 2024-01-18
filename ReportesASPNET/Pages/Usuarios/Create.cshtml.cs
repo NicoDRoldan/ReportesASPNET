@@ -9,26 +9,30 @@ namespace ReportesASPNET.Pages.Usuarios
     public class CreateModel : PageModel
     {
         private readonly IConfiguration _configuration;
+        private readonly CategoriaModels _categoria;
 
         public CreateModel(IConfiguration configuration)
         {
             _configuration = configuration;
+            _categoria = new CategoriaModels(configuration);
         }
 
-        public UsuariosModels usuario = new UsuariosModels();
         public List<CategoriaModels> listaCategorias { get; set; }
+
+        public UsuariosModels usuario = new UsuariosModels();
+        public CategoriaModels categoria => _categoria;
 
         public string errorMessage = "";
         public string successMessage = "";
 
         public void OnGet()
         {
-            listaCategorias = TraerCategorias();
+            listaCategorias = categoria.TraerCategorias();
         }
 
         public void OnPost()
         {
-            listaCategorias = TraerCategorias();
+            listaCategorias = categoria.TraerCategorias();
 
             int categoriaIdSeleccionada;
 
@@ -90,41 +94,5 @@ namespace ReportesASPNET.Pages.Usuarios
 
         }
 
-        public List<CategoriaModels> TraerCategorias()
-        {
-            List<CategoriaModels> listaCategorias = new List<CategoriaModels>();
-
-            string query = "SELECT * FROM Categorias";
-
-            try
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-                {
-                    sqlConnection.Open();
-                    using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
-                    {
-                        using (SqlDataReader sqlDataReader = sqlCommand.ExecuteReader())
-                        {
-                            while (sqlDataReader.Read())
-                            {
-                                //Instancia un nuevo objeto categoria por cada vez que leo.
-                                CategoriaModels categoria = new CategoriaModels();
-
-                                categoria.Id_Categoria = sqlDataReader.GetInt32(0);
-                                categoria.Nombre = sqlDataReader.GetString(1);
-
-                                //Agrego el objeto obtenido en el select recorrido, a una lista de categorias. 
-                                listaCategorias.Add(categoria);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            return listaCategorias;
-        }
     }
 }

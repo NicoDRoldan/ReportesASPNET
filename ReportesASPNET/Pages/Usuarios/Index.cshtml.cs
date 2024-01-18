@@ -34,7 +34,7 @@ namespace ReportesASPNET.Pages.Usuarios
                             while (reader.Read())
                             {
                                 UsuariosModels usuario = new UsuariosModels();
-                                CategoriaModels categoria = new CategoriaModels();
+                                CategoriaModels categoria = new CategoriaModels(_configuration);
 
                                 usuario.Id_Usuario = reader.GetInt32(0);
                                 usuario.Usuario = reader.GetString(1);

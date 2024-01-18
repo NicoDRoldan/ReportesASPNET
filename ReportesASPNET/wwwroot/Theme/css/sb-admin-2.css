@@ -10861,9 +10861,15 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+  background: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");
   background-position: center;
   background-size: cover;
+}
+
+.bg-login-image2 {
+    background-image: url('../sky_clouds_sun_559129_600x800.jpg');
+    background-position: center;
+    background-size: cover;
 }
 
 .bg-register-image {

@@ -1,0 +1,58 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Lista de Usuarios</h6>
+            <a class='btn btn-primary btn-sm' href='/Usuarios/Create'>Nuevo Usuario</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID Usuarios</th>
+                            <th>Usuario</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Categoria</th>
+                            <th>Estado</th>
+                            <th>Fecha de alta</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usuario in Model)
+                        {
+                            <tr>
+                                <td>@usuario.Id_Usuario</td>
+                                <td>@usuario.Usuario</td>
+                                <td>@usuario.Nombre</td>
+                                <td>@usuario.Apellido</td>
+                                <td>@usuario.Categoria.Nombre</td>
+                                <td>@(usuario.Estado ? "Activo" : "Desactivado")</td>
+                                <td>@usuario.Fecha</td>
+                                <td>
+                                    <a class='btn btn-primary btn-sm' href='/Usuarios/Edit?id_Usuario=@usuario.Id_Usuario'>Editar</a>
+                                    <a class='btn btn-danger btn-sm' href='/Usuarios/Delete?id_Usuario=@usuario.Id_Usuario'>Eliminar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

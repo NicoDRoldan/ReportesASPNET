@@ -8,10 +8,12 @@ namespace ReportesASPNET.Controllers
     public class UserController : Controller
     {
         private readonly IConfiguration _configuration;
+        private readonly CategoriaModels _categoria;
         
         public UserController(IConfiguration configuration)
         {
             _configuration = configuration;
+            _categoria = new CategoriaModels(configuration);
         }
 
         public IActionResult Index()
@@ -60,6 +62,116 @@ namespace ReportesASPNET.Controllers
             }
 
             return View(Usuarios);
+        }
+
+        public IActionResult Create()
+        {
+            List<CategoriaModels> listaCategorias = _categoria.TraerCategorias();
+            UsuariosModels usuarios = new UsuariosModels();
+            ViewBag.listaCategorias = listaCategorias;
+
+            return View(usuarios);
+        }
+
+        [HttpPost]
+        public IActionResult Create(UsuariosModels usuarioModel)
+        {
+            List<CategoriaModels> listaCategorias = _categoria.TraerCategorias();
+            ViewBag.listaCategorias = listaCategorias;
+            
+            try
+            {
+                usuarioModel.Fecha = DateTime.Today;
+                usuarioModel.Estado = true;
+
+                if (!ModelState.IsValid)
+                {
+                    string query = "INSERT INTO Usuarios (Usuario, id_Categoria, Password, Estado, Fecha, Nombre, Apellido) " +
+                        "VALUES(@Usuario, @Categoria, @Password, @Estado, @Fecha, @Nombre, @Apellido); " +
+                        "SELECT SCOPE_IDENTITY();";
+
+                    using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                    {
+                        sqlConnection.Open();
+                        using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                        {
+                            sqlCommand.Parameters.AddWithValue("@Usuario", usuarioModel.Usuario);
+                            sqlCommand.Parameters.AddWithValue("@Password", usuarioModel.Password);
+                            sqlCommand.Parameters.AddWithValue("@Categoria", usuarioModel.Id_Categoria);
+                            sqlCommand.Parameters.AddWithValue("@Estado", usuarioModel.Estado);
+                            sqlCommand.Parameters.AddWithValue("@Fecha", usuarioModel.Fecha);
+                            sqlCommand.Parameters.AddWithValue("@Nombre", usuarioModel.Nombre);
+                            sqlCommand.Parameters.AddWithValue("@Apellido", usuarioModel.Apellido);
+
+                            sqlCommand.ExecuteNonQuery();
+                        }
+                    }
+
+                    TempData["SuccessMessage"] = "Se agregó el usuario.";
+                    return RedirectToAction("Index"); // Redirige a la acción Index del controlador para mostrar la lista de usuarios
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+                TempData["Erroressage"] = "Ocurrió un error al agregar el usuario.";
+            }
+
+            return View(usuarioModel);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            List<CategoriaModels> listaCategorias = _categoria.TraerCategorias();
+            UsuariosModels usuario = new UsuariosModels();
+            ViewBag.listaCategorias = listaCategorias;
+
+            
+
+            return View(usuario);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(UsuariosModels usuariosModels)
+        {
+            List<CategoriaModels> listaCategorias = _categoria.TraerCategorias();
+            ViewBag.listaCategorias = listaCategorias;
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                    {
+                        sqlConnection.Open();
+                        string query = "UPDATE Usuarios " +
+                            "SET Usuario=@Usuario, id_Categoria=@Categoria, Estado=@Estado, Nombre=@NombreUser, Apellido=@ApellidoUser " +
+                            "WHERE id_Usuario=@id_Usuario;";
+
+                        using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                        {
+                            sqlCommand.Parameters.AddWithValue("@Usuario", usuariosModels.Usuario);
+                            sqlCommand.Parameters.AddWithValue("@Categoria", usuariosModels.Id_Categoria);
+                            sqlCommand.Parameters.AddWithValue("@Estado", usuariosModels.Estado);
+                            sqlCommand.Parameters.AddWithValue("@NombreUser", usuariosModels.Nombre);
+                            sqlCommand.Parameters.AddWithValue("@ApellidoUser", usuariosModels.Apellido);
+                            sqlCommand.Parameters.AddWithValue("@id_Usuario", usuariosModels.Id_Usuario);
+
+                            sqlCommand.ExecuteNonQuery();
+                        }
+                    }
+                    TempData["SuccessMessage"] = "Se editó el usuario.";
+                    return RedirectToAction("Index"); // Redirige a la acción Index del controlador para mostrar la lista de usuarios
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                TempData["Erroressage"] = "Ocurrió un error al agregar el usuario.";
+            }
+
+            return View(usuariosModels);
         }
     }
 }

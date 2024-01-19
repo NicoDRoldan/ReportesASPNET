@@ -120,13 +120,44 @@ namespace ReportesASPNET.Controllers
             return View(usuarioModel);
         }
 
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             List<CategoriaModels> listaCategorias = _categoria.TraerCategorias();
             UsuariosModels usuario = new UsuariosModels();
             ViewBag.listaCategorias = listaCategorias;
 
-            
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    sqlConnection.Open();
+                    string query = "SELECT id_Usuario, Usuario, c.Nombre [Categoria], Estado, u.Nombre, Apellido FROM Usuarios u INNER JOIN Categorias c ON c.id_Categoria = u.id_Categoria WHERE u.id_Usuario = @id";
+                    using (SqlCommand sqlCommand = new SqlCommand(query, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@id", id);
+                        using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                usuario.Id_Usuario = reader.GetInt32(0);
+                                usuario.Usuario = reader.GetString(1);
+                                _categoria.Nombre = reader.GetString(2);
+                                usuario.Estado = reader.GetBoolean(3);
+                                usuario.Nombre = reader.GetString(4);
+                                usuario.Apellido = reader.GetString(5);
+                            }
+                        }
+                    }
+                    sqlConnection.Close();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                TempData["Erroressage"] = "Ocurrió un error al agregar el usuario.";
+            }
 
             return View(usuario);
         }

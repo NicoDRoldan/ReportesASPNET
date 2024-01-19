@@ -43,7 +43,7 @@
                                 <td>@(usuario.Estado ? "Activo" : "Desactivado")</td>
                                 <td>@usuario.Fecha</td>
                                 <td>
-                                    <a class='btn btn-primary btn-sm' asp asp-area="" asp-controller="User" asp-action="Edit">Editar</a>
+                                    <a class='btn btn-primary btn-sm' asp asp-area="" asp-controller="User" asp-action="Edit" asp-route-id="@usuario.Id_Usuario">Editar</a>
                                     <a class='btn btn-danger btn-sm' asp asp-area="" asp-controller="User" asp-action="Delete">Eliminar</a>
                                 </td>
                             </tr>

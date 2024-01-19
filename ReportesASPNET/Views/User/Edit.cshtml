@@ -21,9 +21,10 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id_Usuario" value="@Model.Id_Usuario" />
             <div class="form-group">
                 <label asp-for="Usuario" class="control-label"></label>
-                <input asp-for="Usuario" class="form-control" value="">
+                <input asp-for="Usuario" class="form-control" value="@Model.Usuario">
                 <span asp-validation-for="Usuario" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -44,11 +45,7 @@
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Categoria</label>
                 <div class="col-sm-6">
-                    <select class="form-control" name="Categoria">
-                        @foreach (var categoria in ViewBag.listaCategorias)
-                        {
-                            <option value="@categoria.Id_Categoria">@categoria.Nombre</option>
-                        }
+                    <select asp-for="Id_Categoria" class="form-control" asp-items="@(new SelectList(ViewBag.listaCategorias, "Id_Categoria", "Nombre"))">
                     </select>
                 </div>
             </div>
